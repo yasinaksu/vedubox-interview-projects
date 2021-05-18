@@ -3,4 +3,4 @@ Vedubox Compony enterence interview projects.
 
 Technologies :  
 Frontend : Angular  
-Backend : Asp.Net Core Web Api
+Backend : Asp.Net Core Web Api (.net5)
