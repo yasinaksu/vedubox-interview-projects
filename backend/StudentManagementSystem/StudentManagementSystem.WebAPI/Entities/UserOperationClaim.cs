@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagementSystem.WebAPI.Entities
 {
-    public class UserOperationClaim
+    public class UserOperationClaim : IEntity
     {
         public int Id { get; set; }
         public int UserId { get; set; }

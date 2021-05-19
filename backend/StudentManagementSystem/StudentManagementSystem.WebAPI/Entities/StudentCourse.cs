@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagementSystem.WebAPI.Entities
 {
-    public class StudentCourse
+    public class StudentCourse : IEntity
     {
         public int Id { get; set; }
         public int StudentUserId { get; set; }
