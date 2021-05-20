@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace StudentManagementSystem.WebAPI.Entities
+namespace StudentManagementSystem.WebAPI.Entities.DTOs
 {
-    public abstract class User : IEntity
+    public class UserForRegisterDto
     {
-        public int UserId { get; set; }
         public string Email { get; set; }
-        public byte[] PasswordSalt { get; set; }
-        public byte[] PasswordHash { get; set; }
+        public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
     }
