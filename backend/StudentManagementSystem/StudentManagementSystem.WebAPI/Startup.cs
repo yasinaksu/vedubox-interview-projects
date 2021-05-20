@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -6,7 +7,14 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StudentManagementSystem.WebAPI.Business.Abstract;
+using StudentManagementSystem.WebAPI.Business.Concrete.Managers;
+using StudentManagementSystem.WebAPI.Core.Utilities.Security.Encryption;
+using StudentManagementSystem.WebAPI.Core.Utilities.Security.JWT;
+using StudentManagementSystem.WebAPI.DataAccess.Abstract;
+using StudentManagementSystem.WebAPI.DataAccess.Concrete.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +36,30 @@ namespace StudentManagementSystem.WebAPI
         {
 
             services.AddControllers();
+
+            services.AddSingleton<IUserDal, EfUserDal>();
+            services.AddSingleton<IAuthService, AuthManager>();
+            services.AddSingleton<ITokenHelper, JwtHelper>();
+
+            services.AddCors();
+
+            var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidIssuer = tokenOptions.Issuer,
+                        ValidAudience = tokenOptions.Audience,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = SecurityKeyHelper.CreateSecurityKey(tokenOptions.SecurityKey)
+                    };
+                });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "StudentManagementSystem.WebAPI", Version = "v1" });
@@ -44,9 +76,13 @@ namespace StudentManagementSystem.WebAPI
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StudentManagementSystem.WebAPI v1"));
             }
 
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4200").AllowAnyHeader());
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

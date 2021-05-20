@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace StudentManagementSystem.WebAPI.DataAccess.Abstract
 {
-    public interface IEntityRepository<T> where T : class, IEntity, new()
+    public interface IEntityRepository<T> where T : class, IEntity
     {
         Task AddAsync(T entity);
         Task UpdateAsync(T entity);

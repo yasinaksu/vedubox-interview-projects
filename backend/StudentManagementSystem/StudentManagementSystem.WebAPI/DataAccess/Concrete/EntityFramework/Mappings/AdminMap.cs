@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace StudentManagementSystem.WebAPI.DataAccess.Concrete.EntityFramework.Mappings
 {
-    public class UserMap : IEntityTypeConfiguration<User>
+    public class AdminMap : IEntityTypeConfiguration<Admin>
     {
-        public void Configure(EntityTypeBuilder<User> builder)
+        public void Configure(EntityTypeBuilder<Admin> builder)
         {
-            builder.ToTable(@"Users", @"dbo");
+            builder.ToTable(@"Admins", @"dbo");
         }
     }
 }

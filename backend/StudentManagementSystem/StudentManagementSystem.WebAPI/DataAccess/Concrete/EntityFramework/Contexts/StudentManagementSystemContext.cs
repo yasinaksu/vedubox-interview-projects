@@ -11,6 +11,7 @@ namespace StudentManagementSystem.WebAPI.DataAccess.Concrete.EntityFramework.Con
     public class StudentManagementSystemContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<Admin> Admins { get; set; }
         public DbSet<Student> Students { get; set; }
         public DbSet<Teacher> Teachers { get; set; }
         public DbSet<Course> Courses { get; set; }
@@ -20,6 +21,10 @@ namespace StudentManagementSystem.WebAPI.DataAccess.Concrete.EntityFramework.Con
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=StudentManagementSystem;Trusted_Connection=true");
         }
     }
 }

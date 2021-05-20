@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace StudentManagementSystem.WebAPI.DataAccess.Concrete.EntityFramework
 {
     public abstract class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
-        where TEntity : class, IEntity, new()
+        where TEntity : class, IEntity
         where TContext : DbContext, new()
     {
         public async Task AddAsync(TEntity entity)
